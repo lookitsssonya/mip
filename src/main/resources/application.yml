@@ -1,0 +1,33 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: ai-recommendations
+
+llm:
+  active-provider: ${LLM_ACTIVE_PROVIDER:internal}
+  default-timeout: 5s
+  default-retries: 2
+  providers:
+    openai:
+      base-url: ${OPENAI_BASE_URL:https://api.openai.com/v1}
+      api-key: ${OPENAI_API_KEY:}
+      model: ${OPENAI_MODEL:gpt-4o-mini}
+      timeout: 5s
+      retries: 2
+    internal:
+      base-url: ${INTERNAL_LLM_URL:http://localhost:9090}
+      api-key: ${INTERNAL_LLM_API_KEY:}
+      model: ${INTERNAL_LLM_MODEL:internal-llm-v1}
+      timeout: 10s
+      retries: 1
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  metrics:
+    tags:
+      application: ${spring.application.name}
